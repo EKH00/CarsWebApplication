@@ -31,11 +31,16 @@ builder.Services.AddCors(options =>
         });
     });
 
-builder.Services.AddMediatR(cfg => { cfg.RegisterServicesFromAssembly(typeof(GetCarsList.Handler).Assembly); });
+builder.Services.AddMediatR(cfg => 
+{ 
+    cfg.RegisterServicesFromAssembly(typeof(GetCarsList.Handler).Assembly); 
+});
 
 builder.Services.AddValidatorsFromAssemblyContaining<Create.CommandValidator>();
 
-builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+builder.Services.AddTransient(
+    typeof(IPipelineBehavior<,>), 
+    typeof(ValidationBehavior<,>));
 
 var app = builder.Build();
 

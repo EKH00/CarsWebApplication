@@ -20,7 +20,8 @@ public class Details
         }
         public async Task<Car?> Handle(Query request, CancellationToken cancellationToken)
         {
-            return await _context.Cars.AsNoTracking()
+            return await _context.Cars
+                .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
         }
     }

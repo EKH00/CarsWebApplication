@@ -22,7 +22,9 @@ public class GetCarsList
 
         public async Task<List<Car>> Handle(Query request, CancellationToken cancellationToken)
         {
-            return await _context.Cars.AsNoTracking().ToListAsync(cancellationToken);
+            return await _context.Cars
+                .AsNoTracking()
+                .ToListAsync(cancellationToken);
         }
     }
 }
