@@ -31,10 +31,20 @@ builder.Services.AddCors(options =>
         });
     });
 
-builder.Services.AddMediatR(cfg => 
-{ 
-    cfg.RegisterServicesFromAssembly(typeof(GetCarsList.Handler).Assembly); 
-});
+// Source - https://stackoverflow.com/a/77188771
+// Posted by Ronald Castillo
+// Retrieved 2026-10-28, License - CC BY-SA 4.0
+
+foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+{
+    builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assembly));
+}
+
+
+//builder.Services.AddMediatR(cfg => 
+//{ 
+//    cfg.RegisterServicesFromAssembly(typeof(GetCarsList.Handler).Assembly); 
+//});
 
 builder.Services.AddValidatorsFromAssemblyContaining<Create.CommandValidator>();
 
