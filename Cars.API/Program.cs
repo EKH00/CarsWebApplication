@@ -19,22 +19,31 @@ builder.Services.AddDbContext<DataContext>(options =>
 {
     options.UseSqlite(
         builder.Configuration.GetConnectionString("DefaultConnection"));
-    });
+});
 
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("CorsPolicy", policy =>
     {
         policy.AllowAnyHeader()
-    .AllowAnyMethod()
-    .WithOrigins("http://localhost:5173");
+            .AllowAnyMethod()
+            .WithOrigins("http://localhost:5173");
         });
     });
 
-builder.Services.AddMediatR(cfg => 
-{ 
-    cfg.RegisterServicesFromAssembly(typeof(GetCarsList.Handler).Assembly); 
-});
+//builder.Services.AddMediatR(cfg => 
+//{ 
+//    cfg.RegisterServicesFromAssembly(typeof(GetCarsList.Handler).Assembly); 
+//});
+
+// Source - https://stackoverflow.com/a/77188771
+// Posted by Ronald Castillo
+// Retrieved 2026-10-27, License - CC BY-SA 4.0
+
+foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+{
+    builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assembly));
+}
 
 builder.Services.AddValidatorsFromAssemblyContaining<Create.CommandValidator>();
 
